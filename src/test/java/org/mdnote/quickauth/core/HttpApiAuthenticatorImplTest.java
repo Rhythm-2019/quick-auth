@@ -3,9 +3,10 @@ package org.mdnote.quickauth.core;
 
 import org.junit.Test;
 import org.mdnote.quickauth.AuthResponse;
+import org.mdnote.quickauth.hash.SHA256HashSignature;
 import org.mdnote.quickauth.requests.HttpAuthRequest;
 import org.mdnote.quickauth.storge.CredentialStorage;
-import org.mdnote.quickauth.storge.UrlPropertiesCredentialStorageImpl;
+import org.mdnote.quickauth.storge.PropertiesFileCredentialStorage;
 import org.mdnote.quickauth.utils.HashUtil;
 
 import java.net.URISyntaxException;
@@ -22,9 +23,8 @@ public class HttpApiAuthenticatorImplTest {
     @Test
     public void testNormal() throws URISyntaxException {
         HashMap<String, String> args = new HashMap<>();
-        String filepath = this.getClass().getClassLoader().getResource("secret.dat").toURI().toString();
-        args.put("url", filepath);
-        CredentialStorage localCredentialStorage = new UrlPropertiesCredentialStorageImpl(args);
+        String filepath = this.getClass().getClassLoader().getResource("secret.dat").getFile();
+        CredentialStorage localCredentialStorage = new PropertiesFileCredentialStorage(filepath);
 
         // make a token
         String url = "http://localhost";
@@ -35,7 +35,7 @@ public class HttpApiAuthenticatorImplTest {
         String token = HashUtil.sha256(payload);
         HttpAuthRequest httpUrlApiRequest = new HttpAuthRequest(url, token, ts, "", appId);
 
-        AuthResponse authResponse = new HttpApiAuthenticatorImpl(localCredentialStorage)
+        AuthResponse authResponse = new HttpApiAuthenticator(localCredentialStorage, new SHA256HashSignature())
                 .auth(httpUrlApiRequest);
 
         assert authResponse.isSuccess();
@@ -44,9 +44,8 @@ public class HttpApiAuthenticatorImplTest {
     @Test
     public void testExpired() throws URISyntaxException {
         HashMap<String, String> args = new HashMap<>();
-        String filepath = this.getClass().getClassLoader().getResource("secret.dat").toURI().toString();
-        args.put("url", filepath);
-        CredentialStorage localCredentialStorage = new UrlPropertiesCredentialStorageImpl(args);
+        String filepath = this.getClass().getClassLoader().getResource("secret.dat").getFile();
+        CredentialStorage localCredentialStorage = new PropertiesFileCredentialStorage(filepath);
 
         // make a token
         String url = "http://localhost";
@@ -57,7 +56,7 @@ public class HttpApiAuthenticatorImplTest {
         String token = HashUtil.sha256(payload);
         HttpAuthRequest httpUrlApiRequest = new HttpAuthRequest(url, token, ts - 62, "", appId);
 
-        AuthResponse authResponse = new HttpApiAuthenticatorImpl(localCredentialStorage)
+        AuthResponse authResponse = new HttpApiAuthenticator(localCredentialStorage, new SHA256HashSignature())
                 .auth(httpUrlApiRequest);
 
         assert authResponse.isExpired();
@@ -66,9 +65,8 @@ public class HttpApiAuthenticatorImplTest {
     @Test
     public void testFailure() throws URISyntaxException {
         HashMap<String, String> args = new HashMap<>();
-        String filepath = this.getClass().getClassLoader().getResource("secret.dat").toURI().toString();
-        args.put("url", filepath);
-        CredentialStorage localCredentialStorage = new UrlPropertiesCredentialStorageImpl(args);
+        String filepath = this.getClass().getClassLoader().getResource("secret.dat").getFile();
+        CredentialStorage localCredentialStorage = new PropertiesFileCredentialStorage(filepath);
 
         // make a token
         String url = "http://localhost";
@@ -79,7 +77,7 @@ public class HttpApiAuthenticatorImplTest {
         String token = HashUtil.sha256(payload);
         HttpAuthRequest httpUrlApiRequest = new HttpAuthRequest(url, token, ts - 50, "", appId);
 
-        AuthResponse authResponse = new HttpApiAuthenticatorImpl(localCredentialStorage)
+        AuthResponse authResponse = new HttpApiAuthenticator(localCredentialStorage, new SHA256HashSignature())
                 .auth(httpUrlApiRequest);
 
         assert authResponse.isFailure();

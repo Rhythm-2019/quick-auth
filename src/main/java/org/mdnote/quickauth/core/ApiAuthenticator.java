@@ -1,7 +1,7 @@
 package org.mdnote.quickauth.core;
 
-import org.mdnote.quickauth.AuthResponse;
 import org.mdnote.quickauth.requests.AuthRequest;
+import org.mdnote.quickauth.AuthResponse;
 
 /**
  * @author Rhythm-2019

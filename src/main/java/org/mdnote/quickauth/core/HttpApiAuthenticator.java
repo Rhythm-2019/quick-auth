@@ -1,10 +1,11 @@
 package org.mdnote.quickauth.core;
 
-import org.mdnote.quickauth.AuthResponse;
-import org.mdnote.quickauth.AuthToken;
 import org.mdnote.quickauth.exception.ArgException;
+import org.mdnote.quickauth.hash.HashSignature;
 import org.mdnote.quickauth.requests.AuthRequest;
 import org.mdnote.quickauth.requests.HttpAuthRequest;
+import org.mdnote.quickauth.AuthResponse;
+import org.mdnote.quickauth.AuthToken;
 import org.mdnote.quickauth.storge.CredentialStorage;
 
 import java.util.LinkedHashMap;
@@ -15,12 +16,15 @@ import java.util.Map;
  * @date 2022/7/12
  * @description 基于 HTTP 授权
  */
-public class HttpApiAuthenticatorImpl implements ApiAuthenticator {
+public class HttpApiAuthenticator implements ApiAuthenticator {
 
     private CredentialStorage credentialStorage;
 
-    public HttpApiAuthenticatorImpl(CredentialStorage credentialStorage) {
+    private HashSignature hashSignature;
+
+    public HttpApiAuthenticator(CredentialStorage credentialStorage, HashSignature hashSignature) {
         this.credentialStorage = credentialStorage;
+        this.hashSignature = hashSignature;
     }
 
     /**
@@ -58,7 +62,7 @@ public class HttpApiAuthenticatorImpl implements ApiAuthenticator {
         arg.put("app-id", httpUrlApiRequest.getAppId());
         arg.put("app-secret", appSecret);
         arg.put("timestamp", String.valueOf(httpUrlApiRequest.getTimestamp()));
-        AuthToken authToken = AuthToken.create(httpUrlApiRequest.getTimestamp(), arg);
+        AuthToken authToken = AuthToken.create(httpUrlApiRequest.getTimestamp(), arg, this.hashSignature);
 
         if (!authToken.match(httpUrlApiRequest.getToken())) {
             return new AuthResponse(AuthResponse.State.FAILURE);
