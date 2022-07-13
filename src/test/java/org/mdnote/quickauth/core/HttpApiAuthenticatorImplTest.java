@@ -3,7 +3,7 @@ package org.mdnote.quickauth.core;
 
 import org.junit.Test;
 import org.mdnote.quickauth.AuthResponse;
-import org.mdnote.quickauth.hash.SHA256HashSignature;
+import org.mdnote.quickauth.signature.DefaultHttpSignature;
 import org.mdnote.quickauth.requests.HttpAuthRequest;
 import org.mdnote.quickauth.storge.CredentialStorage;
 import org.mdnote.quickauth.storge.PropertiesFileCredentialStorage;
@@ -34,7 +34,7 @@ public class HttpApiAuthenticatorImplTest {
         String token = HashUtil.sha256(url + appId + appSecret + ts);
         HttpAuthRequest httpUrlApiRequest = new HttpAuthRequest(url, token, ts, "", appId);
 
-        AuthResponse authResponse = new HttpApiAuthenticator(localCredentialStorage, new SHA256HashSignature())
+        AuthResponse authResponse = new HttpApiAuthenticator(localCredentialStorage, new DefaultHttpSignature())
                 .auth(httpUrlApiRequest);
 
         assert authResponse.isSuccess();
@@ -55,7 +55,7 @@ public class HttpApiAuthenticatorImplTest {
         String token = HashUtil.sha256(url + appId + appSecret + (ts - 61));
         HttpAuthRequest httpUrlApiRequest = new HttpAuthRequest(url, token, ts - 61, "", appId);
 
-        AuthResponse authResponse = new HttpApiAuthenticator(localCredentialStorage, new SHA256HashSignature())
+        AuthResponse authResponse = new HttpApiAuthenticator(localCredentialStorage, new DefaultHttpSignature())
                 .auth(httpUrlApiRequest);
 
         assert authResponse.isExpired();
@@ -76,7 +76,7 @@ public class HttpApiAuthenticatorImplTest {
         String token = HashUtil.sha256(url + appId + appSecret + ts);
         HttpAuthRequest httpUrlApiRequest = new HttpAuthRequest(url, token, ts - 50, "", appId);
 
-        AuthResponse authResponse = new HttpApiAuthenticator(localCredentialStorage, new SHA256HashSignature())
+        AuthResponse authResponse = new HttpApiAuthenticator(localCredentialStorage, new DefaultHttpSignature())
                 .auth(httpUrlApiRequest);
 
         assert authResponse.isFailure();

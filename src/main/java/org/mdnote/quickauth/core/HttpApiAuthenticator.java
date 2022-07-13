@@ -3,7 +3,7 @@ package org.mdnote.quickauth.core;
 import org.mdnote.quickauth.AuthResponse;
 import org.mdnote.quickauth.AuthToken;
 import org.mdnote.quickauth.exception.ArgException;
-import org.mdnote.quickauth.hash.HashSignature;
+import org.mdnote.quickauth.signature.HashSignature;
 import org.mdnote.quickauth.requests.HttpAuthRequest;
 import org.mdnote.quickauth.storge.CredentialStorage;
 
@@ -42,7 +42,7 @@ public class HttpApiAuthenticator implements ApiAuthenticator<HttpAuthRequest> {
             throw new ArgException("timestamp can not be empty");
         }
 
-        // TODO 根据request-id过滤重放请求
+        // TODO Strictly ensure that the interface is not replayed according to the request-id
 
         String appSecret = this.credentialStorage.getAppSecretByAppId(authRequest.getAppId());
         if (appSecret == null) {

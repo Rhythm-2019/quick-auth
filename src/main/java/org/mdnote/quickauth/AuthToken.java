@@ -1,12 +1,11 @@
 package org.mdnote.quickauth;
 
-import org.mdnote.quickauth.hash.HashSignature;
+import org.mdnote.quickauth.signature.HashSignature;
 import org.mdnote.quickauth.requests.AuthRequest;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Map;
 import java.util.TimeZone;
 
 /**

@@ -1,8 +1,6 @@
-package org.mdnote.quickauth.hash;
+package org.mdnote.quickauth.signature;
 
 import org.mdnote.quickauth.requests.AuthRequest;
-
-import java.util.Map;
 
 /**
  * @author Rhythm-2019

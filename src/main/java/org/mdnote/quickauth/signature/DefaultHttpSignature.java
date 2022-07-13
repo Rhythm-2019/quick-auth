@@ -1,6 +1,5 @@
-package org.mdnote.quickauth.hash;
+package org.mdnote.quickauth.signature;
 
-import org.mdnote.quickauth.requests.AuthRequest;
 import org.mdnote.quickauth.requests.HttpAuthRequest;
 import org.mdnote.quickauth.utils.HashUtil;
 
@@ -9,7 +8,7 @@ import org.mdnote.quickauth.utils.HashUtil;
  * @date 2022/7/12
  * @description SHA256 签名算法
  */
-public class SHA256HashSignature implements HashSignature<HttpAuthRequest> {
+public class DefaultHttpSignature implements HashSignature<HttpAuthRequest> {
 
     @Override
     public String hash(HttpAuthRequest authRequest) {
