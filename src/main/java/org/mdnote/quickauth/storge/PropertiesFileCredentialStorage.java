@@ -3,6 +3,7 @@ package org.mdnote.quickauth.storge;
 import org.mdnote.quickauth.exception.ArgException;
 import org.mdnote.quickauth.exception.StorageException;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,7 +26,7 @@ public class PropertiesFileCredentialStorage implements CredentialStorage {
         File propertyFile = null;
         if (propertyFilePath.startsWith("classpath")) {
             try {
-                propertyFile = new ClassPathResource(propertyFilePath).getFile();
+                propertyFile = ResourceUtils.getFile(propertyFilePath);
             } catch (IOException e) {
                 throw new ArgException("file no found", e);
             }

@@ -8,11 +8,12 @@ import org.mdnote.quickauth.AuthResponse;
  * @date 2022/7/12
  * @description 授权接口
  */
-public interface ApiAuthenticator {
+public interface ApiAuthenticator<T extends AuthRequest> {
     /**
      * 授权
+     *
      * @param authRequest 授权参数
      * @return 授权接口
      */
-    AuthResponse auth(AuthRequest authRequest);
+    AuthResponse auth(T authRequest);
 }

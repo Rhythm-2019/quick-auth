@@ -8,25 +8,43 @@ package org.mdnote.quickauth.requests;
 public interface AuthRequest {
     /**
      * 获取 token
+     *
      * @return token
      */
     String getToken();
 
     /**
      * 获取时间戳
+     *
      * @return 时间戳 (s)
      */
     long getTimestamp();
 
     /**
      * 获取 appId
+     *
      * @return appId
      */
     String getAppId();
 
     /**
      * 获取 reqId
+     *
      * @return 请求编号
      */
     String getRequestId();
+
+    /**
+     * 获取密钥
+     *
+     * @return 密钥
+     */
+    String getAppSecret();
+
+    /**
+     * 设置密钥
+     *
+     * @param appSecret 密钥
+     */
+    void setAppSecret(String appSecret);
 }

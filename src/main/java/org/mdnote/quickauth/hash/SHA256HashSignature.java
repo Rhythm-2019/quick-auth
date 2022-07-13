@@ -1,25 +1,26 @@
 package org.mdnote.quickauth.hash;
 
+import org.mdnote.quickauth.requests.AuthRequest;
+import org.mdnote.quickauth.requests.HttpAuthRequest;
 import org.mdnote.quickauth.utils.HashUtil;
-
-import java.util.Map;
 
 /**
  * @author Rhythm-2019
  * @date 2022/7/12
- * @description
+ * @description SHA256 签名算法
  */
-public class SHA256HashSignature implements HashSignature {
+public class SHA256HashSignature implements HashSignature<HttpAuthRequest> {
 
     @Override
-    public String hash(Map<String, String> param) {
+    public String hash(HttpAuthRequest authRequest) {
+
         StringBuilder stringBuilder = new StringBuilder();
-        param.forEach((k, v) -> {
-            stringBuilder.append(k.toLowerCase())
-                    .append("=")
-                    .append(v.toLowerCase())
-                    .append("&");
-        });
-        return HashUtil.sha256(stringBuilder.substring(0, stringBuilder.length() - 1));
+
+        stringBuilder.append(authRequest.getUrl())
+                .append(authRequest.getAppId())
+                .append(authRequest.getAppSecret())
+                .append(authRequest.getTimestamp());
+
+        return HashUtil.sha256(stringBuilder.toString());
     }
 }

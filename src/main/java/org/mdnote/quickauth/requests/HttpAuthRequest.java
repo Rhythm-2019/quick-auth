@@ -1,5 +1,7 @@
 package org.mdnote.quickauth.requests;
 
+import lombok.Data;
+
 /**
  * @author Rhythm-2019
  * @date 2022/7/12
@@ -28,6 +30,10 @@ public class HttpAuthRequest implements AuthRequest {
      * 应用id
      */
     private String appId;
+    /**
+     * 密钥
+     */
+    private String appSecret;
 
     public HttpAuthRequest(String url, String token, long timestamp, String requestId, String appId) {
         this.url = url;
@@ -59,5 +65,16 @@ public class HttpAuthRequest implements AuthRequest {
     @Override
     public String getRequestId() {
         return this.requestId;
+    }
+
+
+    @Override
+    public String getAppSecret() {
+        return this.appSecret;
+    }
+
+    @Override
+    public void setAppSecret(String appSecret) {
+        this.appSecret = appSecret;
     }
 }

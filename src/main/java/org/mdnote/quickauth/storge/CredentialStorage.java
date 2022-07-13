@@ -12,6 +12,7 @@ import java.util.Map;
 public interface CredentialStorage {
     /**
      * 根据 appId 获取密钥
+     *
      * @param appId appId
      * @return 密钥
      */

@@ -1,6 +1,7 @@
 package org.mdnote.quickauth;
 
 import org.mdnote.quickauth.hash.HashSignature;
+import org.mdnote.quickauth.requests.AuthRequest;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -34,8 +35,8 @@ public class AuthToken {
         this.timestamp = LocalDateTime.ofInstant(Instant.ofEpochSecond(timestamp), TimeZone.getDefault().toZoneId());
     }
 
-    public static AuthToken create(long timestamp, Map<String, String> params, HashSignature hashSignature) {
-        return new AuthToken(timestamp, hashSignature.hash(params));
+    public static <T extends AuthRequest> AuthToken create(long timestamp, T authRequest, HashSignature<T> hashSignature) {
+        return new AuthToken(timestamp, hashSignature.hash(authRequest));
     }
 
     public boolean isExpired() {

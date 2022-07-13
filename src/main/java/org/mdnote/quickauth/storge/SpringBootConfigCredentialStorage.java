@@ -8,7 +8,7 @@ import java.util.Map;
  * @date 2022/7/12
  * @description 配置文件
  */
-public class SpringBootConfigCredentialStorage implements CredentialStorage{
+public class SpringBootConfigCredentialStorage implements CredentialStorage {
 
     private Map<Object, Object> storage;
 

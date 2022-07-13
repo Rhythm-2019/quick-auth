@@ -21,18 +21,17 @@ import java.util.HashMap;
 public class HttpApiAuthenticatorImplTest {
 
     @Test
-    public void testNormal() throws URISyntaxException {
-        HashMap<String, String> args = new HashMap<>();
+    public void testNormal() {
         String filepath = this.getClass().getClassLoader().getResource("secret.dat").getFile();
         CredentialStorage localCredentialStorage = new PropertiesFileCredentialStorage(filepath);
 
         // make a token
         String url = "http://localhost";
         String appId = "rhythm-2019";
+        String appSecret = "123456";
         long ts = System.currentTimeMillis() / 1000;
 
-        String payload = "url=" + url + "&app-id=" + appId + "&app-secret=123456&timestamp=" + ts;
-        String token = HashUtil.sha256(payload);
+        String token = HashUtil.sha256(url + appId + appSecret + ts);
         HttpAuthRequest httpUrlApiRequest = new HttpAuthRequest(url, token, ts, "", appId);
 
         AuthResponse authResponse = new HttpApiAuthenticator(localCredentialStorage, new SHA256HashSignature())
@@ -50,11 +49,11 @@ public class HttpApiAuthenticatorImplTest {
         // make a token
         String url = "http://localhost";
         String appId = "rhythm-2019";
+        String appSecret = "123456";
         long ts = System.currentTimeMillis() / 1000;
 
-        String payload = "url=" + url + "&app-id=" + appId + "&app-secret=123456&timestamp=" + (ts - 62);
-        String token = HashUtil.sha256(payload);
-        HttpAuthRequest httpUrlApiRequest = new HttpAuthRequest(url, token, ts - 62, "", appId);
+        String token = HashUtil.sha256(url + appId + appSecret + (ts - 61));
+        HttpAuthRequest httpUrlApiRequest = new HttpAuthRequest(url, token, ts - 61, "", appId);
 
         AuthResponse authResponse = new HttpApiAuthenticator(localCredentialStorage, new SHA256HashSignature())
                 .auth(httpUrlApiRequest);
@@ -63,7 +62,7 @@ public class HttpApiAuthenticatorImplTest {
     }
 
     @Test
-    public void testFailure() throws URISyntaxException {
+    public void testFailure() {
         HashMap<String, String> args = new HashMap<>();
         String filepath = this.getClass().getClassLoader().getResource("secret.dat").getFile();
         CredentialStorage localCredentialStorage = new PropertiesFileCredentialStorage(filepath);
@@ -71,10 +70,10 @@ public class HttpApiAuthenticatorImplTest {
         // make a token
         String url = "http://localhost";
         String appId = "rhythm-2019";
+        String appSecret = "123456";
         long ts = System.currentTimeMillis() / 1000;
 
-        String payload = "url=" + url + "&app-id=" + appId + "&app-secret=123456&timestamp=" + ts;
-        String token = HashUtil.sha256(payload);
+        String token = HashUtil.sha256(url + appId + appSecret + ts);
         HttpAuthRequest httpUrlApiRequest = new HttpAuthRequest(url, token, ts - 50, "", appId);
 
         AuthResponse authResponse = new HttpApiAuthenticator(localCredentialStorage, new SHA256HashSignature())
